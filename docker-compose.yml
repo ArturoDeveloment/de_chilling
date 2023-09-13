@@ -1,7 +1,7 @@
 version: '3.9'
 
 services:
-  database:
+  db:
     container_name: postgresql
     image: postgres:16rc1
     environment:
@@ -12,7 +12,7 @@ services:
       - "5500:5432"
     restart: "always"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isreasy -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 20s
       timeout: 10s
       retries: 5
@@ -32,15 +32,15 @@ services:
   backend: 
     container_name: backend
     image: carlosorrego/django_sena
-    depends_on:
-      database:
-        condition: service_healthy
-    command: python manage.py migrate && python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000 && python manage.py migrate
     restart: "always"
     volumes:
       - backend_django:/home/src
     ports:
-      - "80:8000"
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
     networks:
       - sena_network
     deploy:
@@ -59,10 +59,7 @@ services:
       - PGADMIN_DEFAULT_EMAIL=senita@gmail.com
       - PGADMIN_DEFAULT_PASSWORD=12345
     ports:
-      - "8081:80"
-    depends_on:
-      database:
-        condition: service_healthy
+      - "8080:80"
     restart: "always"
     networks:
       - sena_network

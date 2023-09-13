@@ -7,7 +7,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('formation.urls'), name = "formation_area")
+    path('', include('formation.urls'), name = "formation_area"),
+    path('', include('offices.urls'), name = "offices-suboffices")
 ]
 
 

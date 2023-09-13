@@ -29,7 +29,8 @@ INSTALLED_APPS.extend([
 # Owner apps
 INSTALLED_APPS.extend([
     'core',
-    'formation'
+    'formation',
+    'offices'
 ])
 
 MIDDLEWARE = [

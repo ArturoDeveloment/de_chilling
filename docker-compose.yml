@@ -18,7 +18,69 @@ services:
       retries: 5
     volumes:
       - database_infosena:/var/lib/postgresql/data
-      
+    networks:
+      - sena_network
+    deploy:
+      resources:
+        limits:
+          cpus: "0"
+          memory: "2000m"
+        reservations:
+          cpus: "1"
+          memory: "2000m"
+
+  backend: 
+    container_name: backend
+    image: carlosorrego/django_sena
+    depends_on:
+      database:
+        condition: service_healthy
+    command: python manage.py migrate && python manage.py runserver 0.0.0.0:8000
+    restart: "always"
+    volumes:
+      - backend_django:/home/src
+    ports:
+      - "80:8000"
+    networks:
+      - sena_network
+    deploy:
+      resources:
+        limits:
+          cpus: "0"
+          memory: "500m"
+        reservations:
+          cpus: "1"
+          memory: "500m"
+
+  pg_admin:
+    container_name: pg_admin
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=senita@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=12345
+    ports:
+      - "8081:80"
+    depends_on:
+      database:
+        condition: service_healthy
+    restart: "always"
+    networks:
+      - sena_network
+    deploy:
+      resources:
+        limits:
+          cpus: "0"
+          memory: "100m"
+        reservations:
+          cpus: "1"
+          memory: "100m"
+
 volumes:
   database_infosena:
     name: database_infosena
+  backend_django:
+    name: backend_django
+
+networks:
+  sena_network:
+    name: sena_network

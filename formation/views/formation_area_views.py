@@ -6,6 +6,7 @@ class FormationAreaViewSet(viewsets.ModelViewSet):
     serializer_class = FormationAreaSerializerList
     lookup_field = 'slug'
     lookup_url_kwarg = 'slug'
+    
     # Complement for administration of model ViewSet
     def get_queryset(self):
         return self.get_serializer().Meta.model.objects.filter(status = "active")

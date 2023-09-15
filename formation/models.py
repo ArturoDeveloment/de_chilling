@@ -7,7 +7,7 @@ class TypeProgram(models.Model):
     class Type(models.TextChoices):
         TECHNICAL = 'técnico', 'Técnico'
         TECHNOLOGIST = 'tecnólogo', 'Tecnólogo'
-        OPERATOR = 'operador', 'Operador'
+        OPERATOR = 'operario', 'Operario'
         SPECIALIZATION = 'especialización', 'Especialización'
         ASSISTANT = 'auxiliar', 'Auxiliar'
         

@@ -24,18 +24,19 @@ class FormationAreaSerializerList(serializers.ModelSerializer):
         model_type_program = TypeProgram.objects.all()
         
         # Get type_programs of model type_program
-        types_programs = [('type_programs', i.type_program) for i in model_type_program ]
+        types_programs = [('tipoPrograma', i.type_program) for i in model_type_program ]
         
         # Build the serializer 
-        data['type_programs'] = [
+        data['tipoPrograma'] = [
                 # Load the information with model and compress list 
                 {key: value, 
                 # Get programs and validate with respect to area
-                'programs': [
+                'programas': [
                     {
                         # Get atributres for program if belongs area and type_program
                         'id': program.id,
-                        'name': program.program
+                        'programa': program.program,
+                        'link': f'areas/{instance.slug}/{program.program}'
                     } for program in model_program if value.__eq__(program.type_program.type_program)
                 ]} for key, value in types_programs
             ]

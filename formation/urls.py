@@ -8,6 +8,9 @@ router = routers.DefaultRouter()
 router.register(r'areas', FormationAreaViewSet, basename = "formation-area")
 router.register(r'programas', ProgramViewSet, basename='program')
 
+
+
 urlpatterns = [
     path('', include(router.urls), name = 'areas')
 ]
+
